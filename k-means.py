@@ -2,8 +2,7 @@
 # c1 = (41,19)
 # c2 = (47,100)
 # aturan k- means
-# jika jarak ke C1 < jarak ke C2 → masuk Cluster 1
-# jika jarak ke C2 < jarak ke C1 → masuk Cluster 2
+
 
 #fungsi menghitung jarak
 def distance(p, c):
