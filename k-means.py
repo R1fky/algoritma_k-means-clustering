@@ -4,7 +4,18 @@ import numpy as np
 def distance(p, c):
     return ((p[0] - c[0])**2 + (p[1] - c[1])**2) ** 0.5
 
-
+# menghitung centroid baru 
+def calculate_new_c(cluster):
+    if(len(cluster) == 0):
+        return np.array([0,0])
+    else: 
+        cluster = np.array(cluster)
+        
+        values_0 = np.mean(cluster[:, 0])
+        values_1 = np.mean(cluster[:, 1])
+        
+        return values_0, values_1
+        
 # fungsi kmeans
 def k_means(point_datas, centroids):
     data = point_datas.copy()
@@ -19,27 +30,38 @@ def k_means(point_datas, centroids):
         klusters = []
         for i in range(K):
             klusters.append([])
-            
+        
+        # menghitung jarak atau distance data dan centroid
         for d in data:
             all_distance = []  
             for c in range(len(centroid)):
-                pusat = centroid[c]
-                
+                titik = centroid[c]
                 #hitung jarak/ distance
-                distances = distance(d, pusat)
+                distances = distance(d, titik)
                 all_distance.append((distances))
                 
-            # mencari index terdekat
+            #  mencari index terdekat
             index_terdekat = np.argmin(all_distance) 
                 
-            #masuk ke cluster 
+            # masuk ke cluster 
             klusters[index_terdekat].append(d) 
-        
-        for k in range(len(klusters)):
-            print(f"kluser {k + 1} : {klusters[k]}")
             
-        status = False
         
+        #menghtitung new centroid
+        new_centroid = []
+        for k in range(len(klusters)):
+            cluster = klusters[k]
+            n_centroid = calculate_new_c(cluster)
+            new_centroid.append(n_centroid)
+        
+        new_centroid = np.array(new_centroid)
+        
+        if(np.allclose(new_centroid, centroid)):
+            status = False
+        else:
+            centroid = new_centroid
+            
+    return klusters
     
 
 # data yang mau di cluster 
@@ -54,4 +76,7 @@ c = np.array([
     [50,50]
 ])
 
-k_means(datas, c)
+all_klusters = k_means(datas, c)
+
+for kluster in range(len(all_klusters)):
+    print(f'kluster ke {kluster + 1} : {all_klusters[kluster]}')
