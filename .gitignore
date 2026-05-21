@@ -5,3 +5,5 @@ venv
 tes.py
 
 k-means-test.py
+
+/app/node_modules
